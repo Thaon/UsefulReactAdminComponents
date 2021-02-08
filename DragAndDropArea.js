@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Paper } from "@material-ui/core";
+import { Paper, Grid } from "@material-ui/core";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 //drag and drop list stuff
@@ -109,7 +109,8 @@ const DragAndDropArea = (props) => {
       newState[dInd] = result[dInd];
 
       setState(newState.filter((group) => group.length));
-      if (props.callback) props.callback(newState, lastMoved, movedIndex);
+      if (props.callback)
+        props.callback(newState, lastMoved, destination.index);
     }
   }
 
@@ -145,6 +146,7 @@ const DragAndDropArea = (props) => {
                         key={item.fakeId}
                         draggableId={item.fakeId.toString()}
                         index={index}
+                        isDragDisabled={!props.canDrag}
                       >
                         {(provided, snapshot) => (
                           <div
@@ -170,7 +172,26 @@ const DragAndDropArea = (props) => {
                                 if (props.onClick) props.onClick(item);
                               }}
                             >
-                              {item.name}
+                              <Grid
+                                container
+                                justify="center"
+                                alignItems="space-between"
+                              >
+                                <Grid
+                                  container
+                                  justify="center"
+                                  alignItems="center"
+                                >
+                                  {item.title}
+                                </Grid>
+                                <Grid
+                                  container
+                                  justify="center"
+                                  alignItems="center"
+                                >
+                                  {item.subtitle ? item.subtitle : ""}
+                                </Grid>
+                              </Grid>
                               {/* {props.clone && ind != 0 && (
                                 <button
                                   type="button"
